@@ -20,7 +20,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class CircleApplication extends Application {
     private final List<Point> points = new ArrayList<>();
-    private final Canvas canvas = new Canvas(1920, 1800);
+    private final Canvas canvas = new Canvas(1920, 1080);
     private final Label radiusLabel = new Label("Радіус кола: ");
     private double scaleFactor = 1.0; // Початковий масштаб
     private double lastX; // Координати для збереження попередньої позиції курсору
