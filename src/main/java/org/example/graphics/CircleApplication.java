@@ -161,21 +161,34 @@ public class CircleApplication extends Application {
     }
 
     public Circle findInscribedCircle(List<Point> hull) {
+        if (hull.isEmpty()) return null;
+
         Point centroid = findCentroid(hull);
-        double minRadius = Double.MAX_VALUE;
+        double minDistanceToEdge = Double.MAX_VALUE;
 
         for (int i = 0; i < hull.size(); i++) {
             Point start = hull.get(i);
             Point end = hull.get((i + 1) % hull.size());
             Line edge = new Line(start, end);
-            double radius = distanceFromPointToLine(centroid, edge);
-            if (radius < minRadius) {
-                minRadius = radius;
+
+            double distanceToEdge = distanceFromPointToLine(centroid, edge);
+            minDistanceToEdge = Math.min(minDistanceToEdge, distanceToEdge);
+        }
+
+        // Перевірка, що знайдений радіус не виходить за межі опуклої оболонки
+        // та коло дійсно вписане
+        for (Point point : hull) {
+            double distanceToCentroid = Math.hypot(point.x - centroid.x, point.y - centroid.y);
+            if (distanceToCentroid < minDistanceToEdge) {
+                // Це означає, що коло, знайдене з центром у центроїді та радіусом minDistanceToEdge,
+                // може виходити за межі опуклої оболонки, тому потрібна корекція
+                minDistanceToEdge = distanceToCentroid;
             }
         }
 
-        return new Circle(centroid, minRadius);
+        return new Circle(centroid, minDistanceToEdge);
     }
+
 
     // Функція для обчислення відстані від точки до прямої
     private double distanceFromPointToLine(Point p, Line line) {
