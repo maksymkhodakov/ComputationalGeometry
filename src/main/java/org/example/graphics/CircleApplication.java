@@ -160,17 +160,15 @@ public class CircleApplication extends Application {
         }
     }
 
-    private Circle findInscribedCircle(List<Point> hull) {
+    public Circle findInscribedCircle(List<Point> hull) {
         Point centroid = findCentroid(hull);
         double minRadius = Double.MAX_VALUE;
 
-        // Перебір кожної сторони опуклої оболонки
         for (int i = 0; i < hull.size(); i++) {
             Point start = hull.get(i);
-            Point end = hull.get((i + 1) % hull.size()); // Циклічний доступ до наступної точки
-
-            // Використання формули для відстані від точки до прямої
-            double radius = distanceFromPointToLine(centroid, start, end);
+            Point end = hull.get((i + 1) % hull.size());
+            Line edge = new Line(start, end);
+            double radius = distanceFromPointToLine(centroid, edge);
             if (radius < minRadius) {
                 minRadius = radius;
             }
@@ -179,10 +177,9 @@ public class CircleApplication extends Application {
         return new Circle(centroid, minRadius);
     }
 
-    // Функція для обчислення відстані від точки до лінії, визначеної двома точками
-    private double distanceFromPointToLine(Point p, Point lineStart, Point lineEnd) {
-        double normalLength = Math.sqrt((lineEnd.x - lineStart.x) * (lineEnd.x - lineStart.x) + (lineEnd.y - lineStart.y) * (lineEnd.y - lineStart.y));
-        return Math.abs((p.x - lineStart.x) * (lineEnd.y - lineStart.y) - (p.y - lineStart.y) * (lineEnd.x - lineStart.x)) / normalLength;
+    // Функція для обчислення відстані від точки до прямої
+    private double distanceFromPointToLine(Point p, Line line) {
+        return Math.abs(line.a * p.x + line.b * p.y + line.c) / Math.sqrt(line.a * line.a + line.b * line.b);
     }
 
     private Point findCentroid(List<Point> hull) {
@@ -195,13 +192,25 @@ public class CircleApplication extends Application {
         return new Point(centroidX / hull.size(), centroidY / hull.size());
     }
 
-    static class Circle {
+    public static class Circle {
         Point center;
         double radius;
 
         Circle(Point center, double radius) {
             this.center = center;
             this.radius = radius;
+        }
+    }
+
+    public static class Line {
+        double a;
+        double b;
+        double c;
+
+        Line(Point p1, Point p2) {
+            a = p2.y - p1.y;
+            b = p1.x - p2.x;
+            c = -a * p1.x - b * p1.y;
         }
     }
 

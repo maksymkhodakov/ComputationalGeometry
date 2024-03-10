@@ -3,8 +3,6 @@
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 g
 7src/main/resources/org/example/graphics/hello-view.fxml,3/4/34449309a2c3c9c98d3075d0eea7b5734f668abb
-h
-8src/main/java/org/example/graphics/HelloApplication.java,4/4/446254b8f078c4daea6c494117555b1f93b54582
 g
 7src/main/java/org/example/graphics/HelloController.java,b/c/bcf9dc4c2d1856ef3b8734843d41b3ce49ed15e6
 N
