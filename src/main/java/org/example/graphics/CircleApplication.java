@@ -195,14 +195,27 @@ public class CircleApplication extends Application {
         return Math.abs(line.a * p.x + line.b * p.y + line.c) / Math.sqrt(line.a * line.a + line.b * line.b);
     }
 
-    private Point findCentroid(List<Point> hull) {
+    public Point findCentroid(List<Point> hull) {
+        double totalArea = 0;
         double centroidX = 0;
         double centroidY = 0;
-        for (Point point : hull) {
-            centroidX += point.x;
-            centroidY += point.y;
+
+        for (int i = 1; i < hull.size() - 1; i++) {
+            double area = triangleArea(hull.get(0), hull.get(i), hull.get(i + 1));
+            totalArea += area;
+            centroidX += (hull.get(0).x + hull.get(i).x + hull.get(i + 1).x) * area;
+            centroidY += (hull.get(0).y + hull.get(i).y + hull.get(i + 1).y) * area;
         }
-        return new Point(centroidX / hull.size(), centroidY / hull.size());
+
+        if (totalArea == 0) return new Point(0, 0);
+
+        centroidX /= (3.0 * totalArea);
+        centroidY /= (3.0 * totalArea);
+        return new Point(centroidX, centroidY);
+    }
+
+    private double triangleArea(Point a, Point b, Point c) {
+        return 0.5 * Math.abs(a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
     }
 
     public static class Circle {

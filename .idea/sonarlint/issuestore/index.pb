@@ -26,8 +26,6 @@ G.idea/sonarlint/issuestore/4/4/442292b8a7efeabbe4cc176709b833b1792140ec,8/6/86
 Å
 Q.idea/sonarlint/securityhotspotstore/b/c/bcf9dc4c2d1856ef3b8734843d41b3ce49ed15e6,0/6/062113a70ad996b7e0d9054b64b0e4d3c1d16ee3
 Å
-Q.idea/sonarlint/securityhotspotstore/4/4/446254b8f078c4daea6c494117555b1f93b54582,e/5/e5dcefdc0a5c922ef46487f3d1545feb7ab6809d
-Å
 Q.idea/sonarlint/securityhotspotstore/b/5/b5691e647d1829d5394edc10c63dfe9ae749c1af,9/6/96cf1c5f82cd01e2b4c80e2405a876ebfd8d131f
 U
 %.mvn/wrapper/maven-wrapper.properties,3/2/32e074f71d16c1e88ac02aa83592ca6ad1fd98a8
