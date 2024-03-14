@@ -48,8 +48,8 @@ public class CircleApplication extends Application {
             try {
                 numberOfPoints = Integer.parseInt(numberOfPointsField.getText());
             } catch (NumberFormatException ex) {
-                // рандомно згенероване від 100 до 1000
-                numberOfPoints = ThreadLocalRandom.current().nextInt(100, 1000);
+                // рандомно згенероване від 100 до 10000
+                numberOfPoints = ThreadLocalRandom.current().nextInt(100, 10000);
             }
             generatePoints(numberOfPoints);
             drawPoints();
