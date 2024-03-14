@@ -58,6 +58,8 @@ public class CircleApplication extends Application {
             Circle inscribedCircle = findInscribedCircle(convexHull);
             drawCircle(inscribedCircle);
             radiusLabel.setText(String.format("Радіус кола: %.2f", inscribedCircle.radius)); // Виведення радіуса на мітці
+            List<Line> bisectors = generateBisectors(convexHull);
+            drawBisectors(bisectors);
         });
 
         stage.setScene(scene);
@@ -118,6 +120,74 @@ public class CircleApplication extends Application {
         gc.setFill(Color.BLACK);
         for (Point point : points) {
             gc.fillOval(point.x - 2, point.y - 2, 4, 4);
+        }
+    }
+
+    private List<Line> generateBisectors(List<Point> convexHull) {
+        List<Line> bisectors = new ArrayList<>();
+        int n = convexHull.size();
+        for (int i = 0; i < n; i++) {
+            Point p0 = convexHull.get((i - 1 + n) % n); // Попередня точка
+            Point p1 = convexHull.get(i);                // Поточна точка
+            Point p2 = convexHull.get((i + 1) % n);      // Наступна точка
+
+            // Вектор p0->p1
+            double dx1 = p1.x - p0.x;
+            double dy1 = p1.y - p0.y;
+
+            // Вектор p1->p2
+            double dx2 = p2.x - p1.x;
+            double dy2 = p2.y - p1.y;
+
+            // Нормалізація векторів
+            double len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
+            double len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+            dx1 /= len1;
+            dy1 /= len1;
+            dx2 /= len2;
+            dy2 /= len2;
+
+            // Середній вектор (напрямок бісектриси)
+            double bx = dx1 + dx2;
+            double by = dy1 + dy2;
+            double blen = Math.sqrt(bx * bx + by * by);
+            bx /= blen; // Нормалізація бісектриси
+            by /= blen;
+
+            // Бісектриса як лінія
+            double a = -by;
+            double b = bx;
+            double c = by * p1.x - bx * p1.y;
+            bisectors.add(new Line(a, b, c));
+        }
+
+        return bisectors;
+    }
+
+    private void drawBisectors(List<Line> bisectors) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.GREEN);
+        gc.setLineWidth(1);
+
+        for (Line bisector : bisectors) {
+            double x1;
+            double y1;
+            double x2;
+            double y2;
+
+            if (bisector.b != 0) {
+                x1 = 0;
+                y1 = -bisector.c / bisector.b;
+                x2 = canvas.getWidth();
+                y2 = (-bisector.a * x2 - bisector.c) / bisector.b;
+            } else {
+                x1 = -bisector.c / bisector.a;
+                y1 = 0;
+                x2 = x1;
+                y2 = canvas.getHeight();
+            }
+
+            gc.strokeLine(x1, y1, x2, y2);
         }
     }
 
@@ -237,6 +307,12 @@ public class CircleApplication extends Application {
             a = p2.y - p1.y;
             b = p1.x - p2.x;
             c = -a * p1.x - b * p1.y;
+        }
+
+        public Line(double a, double b, double c) {
+            this.a = a;
+            this.b = b;
+            this.c = c;
         }
     }
 
