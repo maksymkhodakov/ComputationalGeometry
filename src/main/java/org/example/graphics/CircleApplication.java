@@ -154,11 +154,8 @@ public class CircleApplication extends Application {
             bx /= blen; // Нормалізація бісектриси
             by /= blen;
 
-            // Бісектриса як лінія
-            double a = -by;
-            double b = bx;
-            double c = by * p1.x - bx * p1.y;
-            bisectors.add(new Line(a, b, c));
+            double c = -(bx * p1.x + by * p1.y);
+            bisectors.add(new Line(bx, by, c));
         }
 
         return bisectors;
@@ -190,6 +187,7 @@ public class CircleApplication extends Application {
             gc.strokeLine(x1, y1, x2, y2);
         }
     }
+
 
     private List<Point> findConvexHull(List<Point> points) {
         if (points.size() < 3) return Collections.emptyList();
