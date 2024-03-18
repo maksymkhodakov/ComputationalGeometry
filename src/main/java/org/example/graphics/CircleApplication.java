@@ -1,5 +1,6 @@
 package org.example.graphics;
 
+import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
 import javafx.application.Application;
@@ -64,9 +65,13 @@ public class CircleApplication extends Application {
             // Модифікація тут для використання n і m
             List<Point> starShape = formStarShape(points, n, m);
             drawConvexHull(starShape); // Малювання зіркового многокутника
-            Circle inscribedCircle = findInscribedCircle(starShape);
-            drawCircle(inscribedCircle);
-            radiusLabel.setText(String.format("Радіус кола: %.2f", inscribedCircle.radius));
+            // Compute the largest empty circle
+            Circle largestEmptyCircle = findMaximumInscribedCircle(starShape);
+            // Draw the largest empty circle
+            drawCircle(largestEmptyCircle);
+            //Circle inscribedCircle = findInscribedCircle(starShape);
+            //drawCircle(inscribedCircle);
+            radiusLabel.setText(String.format("Радіус кола: %.2f", largestEmptyCircle.radius));
             List<Line> bisectors = generateBisectors(starShape);
             drawBisectors(bisectors);
         });
@@ -75,6 +80,67 @@ public class CircleApplication extends Application {
         stage.setScene(scene);
         stage.setTitle("Опукла Оболонка і Вписане Коло");
         stage.show();
+    }
+
+    private Circle findMaximumInscribedCircle(List<Point> starShape) {
+        if (starShape.isEmpty()) return null;
+
+        // Convert starShape to a JTS polygon
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate[] coordinates = new Coordinate[starShape.size() + 1];
+        for (int i = 0; i < starShape.size(); i++) {
+            Point p = starShape.get(i);
+            coordinates[i] = new Coordinate(p.x, p.y);
+        }
+        // Close the polygon
+        coordinates[starShape.size()] = new Coordinate(starShape.get(0).x, starShape.get(0).y);
+        LinearRing linearRing = geometryFactory.createLinearRing(coordinates);
+        Polygon polygon = geometryFactory.createPolygon(linearRing, null);
+
+        // Compute Delaunay triangulation
+        Geometry delaunay = DelaunayTriangulation(polygon);
+
+        // Find the maximum inscribed circle within each triangle and keep track of the largest one
+        Circle maxCircle = null;
+        double maxRadius = 0;
+        for (int i = 0; i < delaunay.getNumGeometries(); i++) {
+            Geometry triangle = delaunay.getGeometryN(i);
+            Circle circle = findMaximumInscribedCircle(triangle);
+            if (circle.radius > maxRadius) {
+                maxCircle = circle;
+                maxRadius = circle.radius;
+            }
+        }
+
+        return maxCircle;
+    }
+
+    public static Circle findMaximumInscribedCircle(Geometry polygon) {
+        MinimumBoundingCircle mbc = new MinimumBoundingCircle(polygon);
+        Geometry circleGeometry = mbc.getCircle();
+
+        com.vividsolutions.jts.geom.Point centerPoint = circleGeometry.getCentroid();
+        Coordinate centerCoordinate = centerPoint.getCoordinate();
+        Point center = new Point(centerCoordinate.x, centerCoordinate.y);
+
+        double radius = circleGeometry.getEnvelopeInternal().getWidth() / 2; // Use half the width of the envelope as radius
+
+        return new Circle(center, radius);
+    }
+
+    private Point findCentroid(Geometry triangle) {
+        Coordinate[] coordinates = triangle.getCoordinates();
+        double centroidX = (coordinates[0].x + coordinates[1].x + coordinates[2].x) / 3;
+        double centroidY = (coordinates[0].y + coordinates[1].y + coordinates[2].y) / 3;
+        return new Point(centroidX, centroidY);
+    }
+
+
+    // Compute Delaunay triangulation
+    private Geometry DelaunayTriangulation(Polygon polygon) {
+        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
+        voronoiBuilder.setSites(polygon);
+        return voronoiBuilder.getDiagram(polygon.getFactory());
     }
 
     private void setupCanvasZoom() {
