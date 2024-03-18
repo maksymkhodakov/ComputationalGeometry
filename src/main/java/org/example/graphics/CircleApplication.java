@@ -1,5 +1,7 @@
 package org.example.graphics;
 
+import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -13,10 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CircleApplication extends Application {
@@ -243,43 +242,27 @@ public class CircleApplication extends Application {
     public Circle findInscribedCircle(List<Point> starShape) {
         if (starShape.isEmpty()) return null;
 
-        // Початкове припущення для центру кола
-        Point center = findStarCenter(starShape);
-
-        double minDistanceToEdge = Double.MAX_VALUE;
-        // Шукаємо мінімальну відстань від центру до країв
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate[] coordinates = new Coordinate[starShape.size()];
         for (int i = 0; i < starShape.size(); i++) {
-            Point start = starShape.get(i);
-            Point end = starShape.get((i + 1) % starShape.size());
-            Line edge = new Line(start, end);
-
-            double distanceToEdge = distanceFromPointToLine(center, edge);
-            minDistanceToEdge = Math.min(minDistanceToEdge, distanceToEdge);
+            Point p = starShape.get(i);
+            coordinates[i] = new Coordinate(p.x, p.y);
         }
 
-        return new Circle(center, minDistanceToEdge);
-    }
+        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
+        voronoiBuilder.setSites(Arrays.asList(coordinates));
+        Geometry voronoiDiagram = voronoiBuilder.getDiagram(geometryFactory);
 
-    private Point findStarCenter(List<Point> starShape) {
-        // Спробуємо знайти більш точний центр для зірки
-        double minX = Double.MAX_VALUE;
-        double minY = Double.MAX_VALUE;
-        double maxX = Double.MIN_VALUE;
-        double maxY = Double.MIN_VALUE;
-        for (Point p : starShape) {
-            minX = Math.min(minX, p.x);
-            maxX = Math.max(maxX, p.x);
-            minY = Math.min(minY, p.y);
-            maxY = Math.max(maxY, p.y);
-        }
-        // Повертаємо точку посередині між мінімальною та максимальною координатами
-        return new Point((minX + maxX) / 2, (minY + maxY) / 2);
-    }
+        // Extract the convex hull of the Voronoi diagram
+        Geometry convexHull = voronoiDiagram.convexHull();
 
+        // Compute the center and radius of the inscribed circle from the convex hull
+        com.vividsolutions.jts.geom.Point centerPoint = convexHull.getCentroid();
+        Coordinate centerCoordinate = centerPoint.getCoordinate();
+        Point center = new Point(centerCoordinate.x, centerCoordinate.y);
+        double radius = Math.sqrt(convexHull.getArea() / Math.PI);
 
-    // Функція для обчислення відстані від точки до прямої
-    private double distanceFromPointToLine(Point p, Line line) {
-        return Math.abs(line.a * p.x + line.b * p.y + line.c) / Math.sqrt(line.a * line.a + line.b * line.b);
+        return new Circle(center, radius);
     }
 
     public Point findCentroid(List<Point> hull) {
