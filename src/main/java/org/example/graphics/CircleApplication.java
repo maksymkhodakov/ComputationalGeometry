@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -36,7 +37,9 @@ public class CircleApplication extends Application {
         HBox controls = new HBox();
         TextField numberOfPointsField = new TextField();
         Button generateButton = new Button("Генерувати");
-        controls.getChildren().addAll(numberOfPointsField, generateButton, radiusLabel);
+        TextField nField = new TextField(); // Для вводу кількості вершин
+        TextField mField = new TextField(); // Для вводу кроку
+        controls.getChildren().addAll(new Label("n: "), nField, new Label("m: "), mField, new Label("points: "), numberOfPointsField, generateButton, radiusLabel);
 
         root.setTop(controls);
         setupCanvasZoom();
@@ -45,22 +48,30 @@ public class CircleApplication extends Application {
 
         generateButton.setOnAction(e -> {
             int numberOfPoints;
+            int n;
+            int m;
             try {
                 numberOfPoints = Integer.parseInt(numberOfPointsField.getText());
+                n = Integer.parseInt(nField.getText());
+                m = Integer.parseInt(mField.getText());
             } catch (NumberFormatException ex) {
-                // рандомно згенероване від 100 до 10000
+                // Якщо введення некоректне, використовуйте стандартні значення
                 numberOfPoints = ThreadLocalRandom.current().nextInt(100, 10000);
+                n = 5; // Стандартне значення для n
+                m = 2; // Стандартне значення для m
             }
             generatePoints(numberOfPoints);
             drawPoints();
-            List<Point> convexHull = findConvexHull(points);
-            drawConvexHull(convexHull);
-            Circle inscribedCircle = findInscribedCircle(convexHull);
+            // Модифікація тут для використання n і m
+            List<Point> starShape = formStarShape(points, n, m);
+            drawConvexHull(starShape); // Малювання зіркового многокутника
+            Circle inscribedCircle = findInscribedCircle(starShape);
             drawCircle(inscribedCircle);
-            radiusLabel.setText(String.format("Радіус кола: %.2f", inscribedCircle.radius)); // Виведення радіуса на мітці
-            List<Line> bisectors = generateBisectors(convexHull);
+            radiusLabel.setText(String.format("Радіус кола: %.2f", inscribedCircle.radius));
+            List<Line> bisectors = generateBisectors(starShape);
             drawBisectors(bisectors);
         });
+
 
         stage.setScene(scene);
         stage.setTitle("Опукла Оболонка і Вписане Коло");
@@ -189,31 +200,32 @@ public class CircleApplication extends Application {
     }
 
 
-    private List<Point> findConvexHull(List<Point> points) {
-        if (points.size() < 3) return Collections.emptyList();
+    private List<Point> formStarShape(List<Point> points, int n, int m) {
+        if (points.size() < n) return Collections.emptyList(); // Переконатися, що є достатньо точок
 
-        List<Point> sortedPoints = new ArrayList<>(points);
-        sortedPoints.sort((p1, p2) -> p1.y != p2.y ? Double.compare(p1.y, p2.y) : Double.compare(p1.x, p2.x));
-        Point p0 = sortedPoints.get(0);
-        sortedPoints.sort((p1, p2) -> {
-            double angle1 = Math.atan2(p1.y - p0.y, p1.x - p0.x);
-            double angle2 = Math.atan2(p2.y - p0.y, p2.x - p0.x);
+        // Знайти центральну точку для визначення початкової вершини
+        Point center = findCentroid(points);
+
+        // Сортування точок за відстанню від центру
+        points.sort(Comparator.comparingDouble(p -> Math.hypot(p.x - center.x, p.y - center.y)));
+
+        // Вибір n найближчих точок до центру як потенційних вершин зірки
+        List<Point> selectedPoints = points.subList(0, n);
+
+        // Сортування вибраних точок за кутом відносно центру
+        selectedPoints.sort((p1, p2) -> {
+            double angle1 = Math.atan2(p1.y - center.y, p1.x - center.x);
+            double angle2 = Math.atan2(p2.y - center.y, p2.x - center.x);
             return Double.compare(angle1, angle2);
         });
 
-        List<Point> hull = new ArrayList<>();
-        for (Point p : sortedPoints) {
-            while (hull.size() >= 2 && crossProduct(hull.get(hull.size() - 2), hull.get(hull.size() - 1), p) <= 0) {
-                hull.remove(hull.size() - 1);
-            }
-            hull.add(p);
+        // Формування зіркового многокутника через вибір точок з кроком m
+        List<Point> starShape = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            starShape.add(selectedPoints.get((i * m) % n));
         }
 
-        return hull;
-    }
-
-    private double crossProduct(Point a, Point b, Point c) {
-        return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
+        return starShape;
     }
 
     private void drawConvexHull(List<Point> hull) {
@@ -228,33 +240,40 @@ public class CircleApplication extends Application {
         }
     }
 
-    public Circle findInscribedCircle(List<Point> hull) {
-        if (hull.isEmpty()) return null;
+    public Circle findInscribedCircle(List<Point> starShape) {
+        if (starShape.isEmpty()) return null;
 
-        Point centroid = findCentroid(hull);
+        // Початкове припущення для центру кола
+        Point center = findStarCenter(starShape);
+
         double minDistanceToEdge = Double.MAX_VALUE;
-
-        for (int i = 0; i < hull.size(); i++) {
-            Point start = hull.get(i);
-            Point end = hull.get((i + 1) % hull.size());
+        // Шукаємо мінімальну відстань від центру до країв
+        for (int i = 0; i < starShape.size(); i++) {
+            Point start = starShape.get(i);
+            Point end = starShape.get((i + 1) % starShape.size());
             Line edge = new Line(start, end);
 
-            double distanceToEdge = distanceFromPointToLine(centroid, edge);
+            double distanceToEdge = distanceFromPointToLine(center, edge);
             minDistanceToEdge = Math.min(minDistanceToEdge, distanceToEdge);
         }
 
-        // Перевірка, що знайдений радіус не виходить за межі опуклої оболонки
-        // та коло дійсно вписане
-        for (Point point : hull) {
-            double distanceToCentroid = Math.hypot(point.x - centroid.x, point.y - centroid.y);
-            if (distanceToCentroid < minDistanceToEdge) {
-                // Це означає, що коло, знайдене з центром у центроїді та радіусом minDistanceToEdge,
-                // може виходити за межі опуклої оболонки, тому потрібна корекція
-                minDistanceToEdge = distanceToCentroid;
-            }
-        }
+        return new Circle(center, minDistanceToEdge);
+    }
 
-        return new Circle(centroid, minDistanceToEdge);
+    private Point findStarCenter(List<Point> starShape) {
+        // Спробуємо знайти більш точний центр для зірки
+        double minX = Double.MAX_VALUE;
+        double minY = Double.MAX_VALUE;
+        double maxX = Double.MIN_VALUE;
+        double maxY = Double.MIN_VALUE;
+        for (Point p : starShape) {
+            minX = Math.min(minX, p.x);
+            maxX = Math.max(maxX, p.x);
+            minY = Math.min(minY, p.y);
+            maxY = Math.max(maxY, p.y);
+        }
+        // Повертаємо точку посередині між мінімальною та максимальною координатами
+        return new Point((minX + maxX) / 2, (minY + maxY) / 2);
     }
 
 
