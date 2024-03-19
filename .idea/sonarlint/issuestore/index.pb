@@ -106,5 +106,3 @@ w
 G.idea/sonarlint/issuestore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,f/0/f0e0f9cec86fe4b939ae22be5264c758801eb28f
 w
 G.idea/sonarlint/issuestore/9/6/96cf1c5f82cd01e2b4c80e2405a876ebfd8d131f,c/3/c325a58065e3f719addd92ab4ab29b36f5f4c07c
-n
->src/main/java/org/example/graphics/MaximumInscribedCircle.java,9/0/901611bce42e6dce1370599e9ca957f7fb4f2ac0

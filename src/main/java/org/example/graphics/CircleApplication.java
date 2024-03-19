@@ -2,6 +2,8 @@ package org.example.graphics;
 
 import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.geom.*;
+import com.vividsolutions.jts.operation.buffer.BufferOp;
+import com.vividsolutions.jts.operation.buffer.BufferParameters;
 import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -85,34 +87,71 @@ public class CircleApplication extends Application {
     private Circle findMaximumInscribedCircle(List<Point> starShape) {
         if (starShape.isEmpty()) return null;
 
-        // Convert starShape to a JTS polygon
         GeometryFactory geometryFactory = new GeometryFactory();
         Coordinate[] coordinates = new Coordinate[starShape.size() + 1];
         for (int i = 0; i < starShape.size(); i++) {
             Point p = starShape.get(i);
             coordinates[i] = new Coordinate(p.x, p.y);
         }
-        // Close the polygon
         coordinates[starShape.size()] = new Coordinate(starShape.get(0).x, starShape.get(0).y);
         LinearRing linearRing = geometryFactory.createLinearRing(coordinates);
         Polygon polygon = geometryFactory.createPolygon(linearRing, null);
 
-        // Compute Delaunay triangulation
-        Geometry delaunay = DelaunayTriangulation(polygon);
+        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
+        voronoiBuilder.setSites(polygon);
+        Geometry voronoiDiagram = voronoiBuilder.getDiagram(geometryFactory);
 
-        // Find the maximum inscribed circle within each triangle and keep track of the largest one
+        List<Point> voronoiVertices = extractVertices(voronoiDiagram);
+
         Circle maxCircle = null;
         double maxRadius = 0;
-        for (int i = 0; i < delaunay.getNumGeometries(); i++) {
-            Geometry triangle = delaunay.getGeometryN(i);
-            Circle circle = findMaximumInscribedCircle(triangle);
-            if (circle.radius > maxRadius) {
+        for (Point vertex : voronoiVertices) {
+            Circle circle = findCircleContainingPoint(starShape, vertex);
+            if (Objects.requireNonNull(circle).radius > maxRadius) {
                 maxCircle = circle;
                 maxRadius = circle.radius;
             }
         }
 
         return maxCircle;
+    }
+
+    private List<Point> extractVertices(Geometry geometry) {
+        List<Point> vertices = new ArrayList<>();
+        for (int i = 0; i < geometry.getNumGeometries(); i++) {
+            Geometry pointGeometry = geometry.getGeometryN(i);
+            Coordinate coordinate = pointGeometry.getCoordinate();
+            vertices.add(new Point(coordinate.x, coordinate.y));
+        }
+        return vertices;
+    }
+
+    private Circle findCircleContainingPoint(List<Point> starShape, Point point) {
+        if (starShape.isEmpty()) return null;
+
+        double minDistance = Double.MAX_VALUE;
+        for (int i = 0; i < starShape.size(); i++) {
+            Point p1 = starShape.get(i);
+            Point p2 = starShape.get((i + 1) % starShape.size());
+            double distance = pointToLineDistance(point, p1, p2);
+            minDistance = Math.min(minDistance, distance);
+        }
+
+        return new Circle(point, minDistance);
+    }
+
+    private double pointToLineDistance(Point p, Point p1, Point p2) {
+        double x0 = p.x;
+        double y0 = p.y;
+        double x1 = p1.x;
+        double y1 = p1.y;
+        double x2 = p2.x;
+        double y2 = p2.y;
+        double dx = x2 - x1;
+        double dy = y2 - y1;
+        double num = Math.abs(dx * (y1 - y0) - (x1 - x0) * dy);
+        double den = Math.sqrt(dx * dx + dy * dy);
+        return num / den;
     }
 
     public static Circle findMaximumInscribedCircle(Geometry polygon) {
