@@ -84,10 +84,11 @@ public class CircleApplication extends Application {
             System.out.println("All Voronoi diagram's edges");
             System.out.println(voronoiEdges);
 
-            final var intersections = findAllIntersectionPoints(voronoiEdges);
+            final Set<Point> intersections = findAllIntersectionPoints(voronoiEdges);
+
             GraphicsContext gc = canvas.getGraphicsContext2D();
             // Highlighting intersection points
-            gc.setFill(Color.BLUE); // Choose a color for the intersection points
+            gc.setFill(Color.GREEN); // Choose a color for the intersection points
             for (Point intersection : intersections) {
                 gc.fillOval(intersection.x - 3, intersection.y - 3, 6, 6); // Draw a small circle for each intersection point
             }

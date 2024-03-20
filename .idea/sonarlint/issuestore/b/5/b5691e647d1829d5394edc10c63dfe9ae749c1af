@@ -1,30 +1,30 @@
 
-ƒ	java:S125G"<This block of commented-out lines of code should be removed.(¶Œ²Çşÿÿÿÿ8ı°ğëå1J$d7f6a294-3652-40f5-b84c-8aa5a024673d
-r	java:S106T"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8èœíëå1J$a43c702e-59da-4505-a789-660c7f8abf57
-l	java:S106U"+Replace this use of System.out by a logger.(“ê»r8éœíëå1J$50062522-d00e-459c-afc9-476b66687728
-r	java:S106^"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8éœíëå1J$25f18565-5118-4c50-9bb0-f1283e412c89
-r	java:S106_"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8êœíëå1J$2ca4be7b-ac1d-4e64-99a6-ed9f8218d12c
-ƒ	java:S125b"<This block of commented-out lines of code should be removed.(Óö²áúÿÿÿÿ8—ß’ìå1J$56280fc0-76cc-4ca7-932c-c5966fc86689
+ƒ	java:S125G"<This block of commented-out lines of code should be removed.(¶Œ²Çşÿÿÿÿ8ı°ğëå1J$4d4751c0-adb1-4229-b086-6727d94ef5c0
+r	java:S106T"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8èœíëå1J$9e4d424d-31c6-428f-9656-576f58c5f270
+l	java:S106U"+Replace this use of System.out by a logger.(“ê»r8éœíëå1J$1247a951-b5a4-41d0-be93-8ad65c07f089
+r	java:S106_"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8éœíëå1J$83625d59-4bcc-4236-b6af-6dfe4c98b192
+r	java:S106`"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8êœíëå1J$2d4696ff-f4fc-424a-8e80-237c8d4faef5
+ƒ	java:S125c"<This block of commented-out lines of code should be removed.(Óö²áúÿÿÿÿ8—ß’ìå1J$f3ef076d-b350-474b-8bfa-f2564411ed3b
 š
-java:S3776m"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Ñ¯íëå1J$46fdb10b-edb3-419d-afaa-1eb8348a5851
+java:S3776n"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Ñ¯íëå1J$cd75c492-637c-4610-8cb4-6141e24048b1
 Œ
-java:S6201w"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Ò¯íëå1J$daaaf1fa-ad45-44fa-9a4d-d5875cd1d979
+java:S6201x"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Ò¯íëå1J$0b2b9ba1-d5bf-4f7f-bee6-1d932954b95f
 ‘
-java:S6201’"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ó¯íëå1J$2f9a77ca-1b72-4b3d-941f-7e4e857b9c0c
+java:S6201“"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ó¯íëå1J$f30fe0de-81e9-4514-b283-d68b2a8140c6
 ‘
-java:S6201§"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ô¯íëå1J$f0c26944-273c-4733-9e62-11c7e4d32d78
-‘	java:S100µ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8Ú¯íëå1J$7ce92f10-d13d-461a-9b6f-9a1058c90250
+java:S6201¨"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ô¯íëå1J$ec8afa08-8089-4d7f-9d6d-305dea982ab8
+‘	java:S100¶"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8Ú¯íëå1J$21190e2a-5002-4582-ab84-f2a1a528a360
 ”
-java:S1206´"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8â¯íëå1J$309ab45e-f910-4888-90cf-dae814de1ed6
+java:S1206µ"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8â¯íëå1J$bdbfe929-6309-45bc-a992-c98215545de4
 ˆ
-java:S1144Ù"?Remove this unused private "findMaximumInscribedCircle" method.(È”Çıÿÿÿÿ8“±ğëå1J$50a640ee-5381-4cca-ba89-8d9fb2f97dcd
+java:S1144Ú"?Remove this unused private "findMaximumInscribedCircle" method.(È”Çıÿÿÿÿ8“±ğëå1J$1296a960-3ba7-4e15-b38e-c067b5615c4e
 u
-java:S1144¬"1Remove this unused private "findCentroid" method.(ç”İñ8ã¯íëå1J$3d5fe670-1ace-493f-9a5f-17e5d668a857
+java:S1144­"1Remove this unused private "findCentroid" method.(ç”İñ8ã¯íëå1J$7dd97600-6109-45a8-b00d-9abdd1e9b972
 ~
-java:S1144µ":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8ã¯íëå1J$eb423e99-a852-42aa-ab62-2b6efbdbd632
+java:S1144¶":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8ã¯íëå1J$e36b2c0b-be91-4f41-a5cd-4e7ce578e8f5
 x
-java:S1144Ú"/Remove this unused private "drawCircle" method.(¤£‚Šùÿÿÿÿ8«ß’ìå1J$51f1d92c-96d3-483e-9416-a3d94a04125a
+java:S1144Û"/Remove this unused private "drawCircle" method.(¤£‚Šùÿÿÿÿ8«ß’ìå1J$4de1c49b-416c-419f-a8db-7a01bf318c7d
 
-java:S1144ó"6Remove this unused private "generateBisectors" method.(¥­ü«üÿÿÿÿ8ûğŸìå1J$fe822c39-5b70-4e38-a92d-84375f0a8370
+java:S1144ô"6Remove this unused private "generateBisectors" method.(¥­ü«üÿÿÿÿ8ûğŸìå1J$cd6fe53a-2285-4fd3-b6b6-58653c5cc64e
 v
-java:S1144™"2Remove this unused private "drawBisectors" method.(ªÁÙò8üğŸìå1J$6410527c-30e8-4211-ab73-fb91e6aaa628
+java:S1144š"2Remove this unused private "drawBisectors" method.(ªÁÙò8üğŸìå1J$e23deb0d-a7e6-4167-8a31-02d64b310245
