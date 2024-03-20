@@ -96,6 +96,30 @@ public class CircleApplication extends Application {
             System.out.println(intersections);
 
 
+            // Store circles and their radii in a list
+            List<Circle> circles = new ArrayList<>();
+            for (Point intersection : intersections) {
+                double radius = calculateDistanceToStarPolygonBoundary(intersection, starPolygon);
+                circles.add(new Circle(intersection, radius));
+            }
+
+            // Draw circles with radii up to the star polygon
+            gc.setStroke(Color.BLUE); // Set the color for the circles
+            for (Circle circle : circles) {
+                double x = circle.center.x;
+                double y = circle.center.y;
+                double radius = circle.radius;
+                gc.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
+            }
+
+            // List all circles and their radii
+            System.out.println("All circles and their radii:");
+            for (int i = 0; i < circles.size(); i++) {
+                Circle circle = circles.get(i);
+                System.out.println("Circle " + (i + 1) + ": Center(" + circle.center.x + ", " + circle.center.y + "), Radius: " + circle.radius);
+            }
+
+
             //final Circle circle = findOptimalInscribedCircle(intersections, starShape);
             //drawCircle(circle);
             //radiusLabel.setText(String.format("Радіус кола: %.2f", circle.radius));
@@ -105,6 +129,14 @@ public class CircleApplication extends Application {
         stage.setScene(scene);
         stage.setTitle("Опукла Оболонка і Вписане Коло");
         stage.show();
+    }
+
+    // Calculate the distance from an intersection point to the closest point on the star polygon boundary
+    private double calculateDistanceToStarPolygonBoundary(Point point, Polygon starPolygon) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Geometry pointGeometry = geometryFactory.createPoint(new Coordinate(point.x, point.y));
+        Geometry boundary = starPolygon.getExteriorRing();
+        return pointGeometry.distance(boundary);
     }
 
     public Set<Point> findAllIntersectionPoints(List<LineString> lines) {
