@@ -2,8 +2,6 @@ package org.example.graphics;
 
 import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.geom.*;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
 import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -20,6 +18,7 @@ import javafx.stage.Stage;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class CircleApplication extends Application {
     private final List<Point> points = new ArrayList<>();
@@ -80,12 +79,67 @@ public class CircleApplication extends Application {
             Polygon starPolygon = createStarShapePolygon(starShape); // starShape is your list of star shape points
             Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // points are used to generate the diagram
             drawVoronoiDiagram(voronoiDiagram, starPolygon); // Now pass the starPolygon as well
+            final List<LineString> voronoiEdges = captureVoronoiEdges(voronoiDiagram);
+            System.out.println("All Voronoi diagram's edges");
+            System.out.println(voronoiEdges);
+
+            final var intersections = findAllIntersectionPoints(voronoiEdges);
+            System.out.println("Intersections:");
+            System.out.println(intersections);
         });
 
 
         stage.setScene(scene);
         stage.setTitle("Опукла Оболонка і Вписане Коло");
         stage.show();
+    }
+
+    public Set<com.vividsolutions.jts.geom.Point> findAllIntersectionPoints(List<LineString> lines) {
+        Set<com.vividsolutions.jts.geom.Point> intersectionPoints = new HashSet<>();
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        // Compare each line with every other line exactly once
+        for (int i = 0; i < lines.size(); i++) {
+            for (int j = i + 1; j < lines.size(); j++) {
+                Geometry intersection = lines.get(i).intersection(lines.get(j));
+
+                // If there's an intersection, process it
+                if (intersection != null && !intersection.isEmpty()) {
+                    if (intersection instanceof com.vividsolutions.jts.geom.Point) {
+                        // If the intersection is a single point, add it directly
+                        intersectionPoints.add((com.vividsolutions.jts.geom.Point) intersection);
+                    } else if (intersection instanceof MultiPoint) {
+                        // If the intersection is multiple points, add them all
+                        for (int pointIndex = 0; pointIndex < intersection.getNumGeometries(); pointIndex++) {
+                            intersectionPoints.add((com.vividsolutions.jts.geom.Point) intersection.getGeometryN(pointIndex));
+                        }
+                    }
+                }
+            }
+        }
+
+        return intersectionPoints;
+    }
+
+
+    public List<LineString> captureVoronoiEdges(Geometry voronoiDiagram) {
+        List<LineString> edges = new ArrayList<>();
+        GeometryFactory geometryFactory = new GeometryFactory();
+
+        for (int i = 0; i < voronoiDiagram.getNumGeometries(); i++) {
+            Geometry geometry = voronoiDiagram.getGeometryN(i);
+            if (geometry instanceof Polygon) {
+                Polygon polygon = (Polygon) geometry;
+                Coordinate[] coordinates = polygon.getExteriorRing().getCoordinates();
+                for (int j = 0; j < coordinates.length - 1; j++) {
+                    Coordinate start = coordinates[j];
+                    Coordinate end = coordinates[j + 1];
+                    edges.add(geometryFactory.createLineString(new Coordinate[]{start, end}));
+                }
+            }
+        }
+
+        return edges;
     }
 
     private void drawVoronoiDiagram(Geometry voronoiDiagram, Polygon starPolygon) {
