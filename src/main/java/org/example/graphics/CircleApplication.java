@@ -66,15 +66,16 @@ public class CircleApplication extends Application {
             // Модифікація тут для використання n і m
             List<Point> starShape = formStarShape(points, n, m);
             drawConvexHull(starShape); // Малювання зіркового многокутника
+
             // Compute the largest empty circle
-            Circle largestEmptyCircle = findMaximumInscribedCircle(starShape);
+            //Circle largestEmptyCircle = findMaximumInscribedCircle(starShape);
             // Draw the largest empty circle
-            drawCircle(largestEmptyCircle);
+            //drawCircle(largestEmptyCircle);
             //Circle inscribedCircle = findInscribedCircle(starShape);
             //drawCircle(inscribedCircle);
-            radiusLabel.setText(String.format("Радіус кола: %.2f", largestEmptyCircle.radius));
-            List<Line> bisectors = generateBisectors(starShape);
-            drawBisectors(bisectors);
+            //radiusLabel.setText(String.format("Радіус кола: %.2f", largestEmptyCircle.radius));
+            //List<Line> bisectors = generateBisectors(starShape);
+            //drawBisectors(bisectors);
 
             Polygon starPolygon = createStarShapePolygon(starShape); // starShape is your list of star shape points
             Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // points are used to generate the diagram
@@ -84,8 +85,19 @@ public class CircleApplication extends Application {
             System.out.println(voronoiEdges);
 
             final var intersections = findAllIntersectionPoints(voronoiEdges);
+            GraphicsContext gc = canvas.getGraphicsContext2D();
+            // Highlighting intersection points
+            gc.setFill(Color.BLUE); // Choose a color for the intersection points
+            for (Point intersection : intersections) {
+                gc.fillOval(intersection.x - 3, intersection.y - 3, 6, 6); // Draw a small circle for each intersection point
+            }
             System.out.println("Intersections:");
             System.out.println(intersections);
+
+
+            //final Circle circle = findOptimalInscribedCircle(intersections, starShape);
+            //drawCircle(circle);
+            //radiusLabel.setText(String.format("Радіус кола: %.2f", circle.radius));
         });
 
 
