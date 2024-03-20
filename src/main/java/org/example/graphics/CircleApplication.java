@@ -76,12 +76,92 @@ public class CircleApplication extends Application {
             radiusLabel.setText(String.format("Радіус кола: %.2f", largestEmptyCircle.radius));
             List<Line> bisectors = generateBisectors(starShape);
             drawBisectors(bisectors);
+
+            Polygon starPolygon = createStarShapePolygon(starShape); // starShape is your list of star shape points
+            Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // points are used to generate the diagram
+            drawVoronoiDiagram(voronoiDiagram, starPolygon); // Now pass the starPolygon as well
         });
 
 
         stage.setScene(scene);
         stage.setTitle("Опукла Оболонка і Вписане Коло");
         stage.show();
+    }
+
+    private void drawVoronoiDiagram(Geometry voronoiDiagram) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.ORANGE); // Set a color that distinguishes Voronoi edges
+        gc.setLineWidth(1); // Line width for Voronoi edges
+
+        for (int i = 0; i < voronoiDiagram.getNumGeometries(); i++) {
+            Geometry geometry = voronoiDiagram.getGeometryN(i);
+            if (geometry instanceof Polygon) {
+                Polygon polygon = (Polygon) geometry;
+                Coordinate[] coordinates = polygon.getExteriorRing().getCoordinates();
+                for (int j = 0; j < coordinates.length - 1; j++) {
+                    Coordinate start = coordinates[j];
+                    Coordinate end = coordinates[j + 1];
+                    gc.strokeLine(start.x, start.y, end.x, end.y);
+                }
+            }
+        }
+    }
+
+    private void drawVoronoiDiagram(Geometry voronoiDiagram, Polygon starPolygon) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setStroke(Color.ORANGE); // Set a color that distinguishes Voronoi edges
+        gc.setLineWidth(1); // Line width for Voronoi edges
+
+        for (int i = 0; i < voronoiDiagram.getNumGeometries(); i++) {
+            Geometry geometry = voronoiDiagram.getGeometryN(i);
+            if (geometry instanceof Polygon) {
+                Polygon polygon = (Polygon) geometry;
+                Coordinate[] coordinates = polygon.getExteriorRing().getCoordinates();
+                for (int j = 0; j < coordinates.length - 1; j++) {
+                    Coordinate start = coordinates[j];
+                    Coordinate end = coordinates[j + 1];
+                    gc.strokeLine(start.x, start.y, end.x, end.y);
+                }
+            }
+        }
+
+        // Now, let's mark all points that are inside the star polygon
+        gc.setFill(Color.BLUE); // Set a color for points inside the star polygon
+        for (Point point : points) { // Assuming 'points' are the Voronoi vertices or any points you want to check
+            Geometry pointGeometry = new GeometryFactory().createPoint(new Coordinate(point.x, point.y));
+            if (starPolygon.contains(pointGeometry)) {
+                gc.fillOval(point.x - 3, point.y - 3, 6, 6); // Draw a small circle for each point inside
+            }
+        }
+    }
+
+    private Polygon createStarShapePolygon(List<Point> starShapePoints) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        Coordinate[] coordinates = new Coordinate[starShapePoints.size() + 1];
+        for (int i = 0; i < starShapePoints.size(); i++) {
+            coordinates[i] = new Coordinate(starShapePoints.get(i).x, starShapePoints.get(i).y);
+        }
+        coordinates[starShapePoints.size()] = coordinates[0]; // Close the polygon by repeating the first point at the end
+        LinearRing linearRing = geometryFactory.createLinearRing(coordinates);
+        return geometryFactory.createPolygon(linearRing, null);
+    }
+
+
+    private Geometry generateVoronoiDiagram(List<Point> points) {
+        GeometryFactory geometryFactory = new GeometryFactory();
+        GeometryCollection geometryCollection = convertPointsToGeometryCollection(points, geometryFactory);
+
+        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
+        voronoiBuilder.setSites(geometryCollection);
+        return voronoiBuilder.getDiagram(geometryFactory);
+    }
+
+    private GeometryCollection convertPointsToGeometryCollection(List<Point> points, GeometryFactory geometryFactory) {
+        Geometry[] geometries = new Geometry[points.size()];
+        for (int i = 0; i < points.size(); i++) {
+            geometries[i] = geometryFactory.createPoint(new Coordinate(points.get(i).x, points.get(i).y));
+        }
+        return new GeometryCollection(geometries, geometryFactory);
     }
 
     private Circle findMaximumInscribedCircle(List<Point> starShape) {

@@ -1,11 +1,17 @@
 
-ƒ	java:S125J"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8Ë±ÃÃå1J$e01bec50-7d46-4dcf-a746-cdaac9d004c4
-‘	java:S100³"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8Ó±ÃÃå1J$4fe97fd3-7382-4577-a715-b12912ccad28
+ƒ	java:S125J"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8Ë±ÃÃå1J$37c510d9-e549-4259-a4ff-db8edc06d3c7
+
+java:S6201b"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8ñ‚»éå1J$334039e2-d843-41c2-9e21-ce0337cda7ac
+
+java:S6201u"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8ªÌééå1J$4b66240e-7900-422b-9cb2-a5110c14575d
+‘	java:S100ƒ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8Ó±ÃÃå1J$6e32b95b-5076-4ba5-a8eb-7a58329fa67e
 •
-java:S1128"MRemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferOp'.(£Âö¼øÿÿÿÿ8éÔÃå1J$26b115fc-ad84-4fdf-9955-d948b5d67fc1
+java:S1128"MRemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferOp'.(£Âö¼øÿÿÿÿ8Çïéå1J$d3912058-5123-429b-8be7-660c10304b47
 ˜
-java:S1128"URemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferParameters'.(ËÉµ8‚éÔÃå1J$150e4b2d-9264-473f-a775-8a9633a87f31
+java:S1128"URemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferParameters'.(ËÉµ8Çïéå1J$7af58255-50a8-44b1-8ba0-5cc35473e99a
+
+java:S1144["7Remove this unused private "drawVoronoiDiagram" method.(¿“¢­ûÿÿÿÿ8Èïéå1J$d9a4adaa-9734-40b5-a52e-8e40d83f27ce
 u
-java:S1144ª"1Remove this unused private "findCentroid" method.(ç”İñ8å±ÃÃå1J$d728898d-2a30-410e-a249-10e1d5c60b1d
+java:S1144ú"1Remove this unused private "findCentroid" method.(ç”İñ8å±ÃÃå1J$57b1bc8c-b999-496b-a1b2-168bf5af5dd2
 ~
-java:S1144³":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8å±ÃÃå1J$8e24668e-caff-4c9e-9e01-cd7e5f95b53f
+java:S1144ƒ":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8å±ÃÃå1J$35fd1d04-c38a-4dfc-b032-596e3c82df96
