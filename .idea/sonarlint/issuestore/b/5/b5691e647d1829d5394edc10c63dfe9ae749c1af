@@ -1,25 +1,21 @@
 
-ƒ	java:S125I"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8„Îëå1J$d1ccfa20-f9d6-4bd1-9c9b-dcf402aee938
-r	java:S106S"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8„Îëå1J$f92d24df-ceba-433f-8e5c-630daf1ac774
-l	java:S106T"+Replace this use of System.out by a logger.(“ê»r8„Îëå1J$68bc8211-a667-4706-be7c-5315a9385289
-r	java:S106W"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8„Îëå1J$39fe4c9b-ffbb-4a94-8e68-afc5c7bae297
-r	java:S106X"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8„Îëå1J$e4891daa-f013-40c0-8c52-a91000eb9b01
+ƒ	java:S125I"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8„Îëå1J$f3a3827d-b7c9-4d81-a0f0-2b5e409893dd
+r	java:S106S"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8„Îëå1J$32c92da1-079d-485b-912a-4aa3e548c0e6
+l	java:S106T"+Replace this use of System.out by a logger.(“ê»r8„Îëå1J$07be5ce3-58cb-4fe4-8386-24c470cd0c75
+r	java:S106W"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8„Îëå1J$965c0165-61b4-4091-9b24-056d9511b655
+r	java:S106X"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8„Îëå1J$90f385cb-a50b-4d7a-a269-f71a2ccfa52d
 š
-java:S3776a"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(×åúıÿÿÿÿ8„Îëå1J$6c12f936-97b5-46ef-81a8-ae43fda5a3cb
-†
-java:S1854c"CRemove this useless assignment to local variable "geometryFactory".(ŠúÉƒ8„Îëå1J$74d779b9-b7c7-48bb-b9da-283f0e2c2245
-w
-java:S1481c"4Remove this unused "geometryFactory" local variable.(ŠúÉƒ8„Îëå1J$9c79cd5b-d8af-4b10-9e4f-236ebdbff398
+java:S3776a"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8„Îëå1J$00afb7e0-2b74-4d3f-b972-6b9fa15abb0e
 Œ
-java:S6201l"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8‘„Îëå1J$19ad4acf-3809-48c3-b0d7-65f0c8599fc7
+java:S6201k"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8‘„Îëå1J$8aee034a-e898-4161-afed-c3c2f8e10e75
 ‘
-java:S6201ƒ"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8’„Îëå1J$4b89e0e1-6f14-4af6-9805-421500dd3b18
+java:S6201†"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8’„Îëå1J$8f575e5f-dcf5-44cd-b5ef-84c4e5f197f0
 ‘
-java:S6201˜"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8“„Îëå1J$7cda12af-5168-43fb-8697-024591c82193
-‘	java:S100¦"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8™„Îëå1J$5ef13b29-ea81-403a-bfa8-812fa7116fc0
-€
-java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ8¢„Îëå1J$e7bc70d7-9507-457a-91dd-4cf3696a1abd
+java:S6201›"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8“„Îëå1J$39920afb-8ed1-4e9c-9fad-64993ff8327c
+‘	java:S100©"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8™„Îëå1J$a26f9c0c-1b20-47c6-803a-40673006f52e
+”
+java:S1206¨"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8ÒÎ×ëå1J$5df9e889-2347-4d49-9465-1d13eb4305f9
 u
-java:S1144"1Remove this unused private "findCentroid" method.(ç”İñ8¢„Îëå1J$1a94c18c-d60c-4c67-bdb2-7973030bd753
+java:S1144 "1Remove this unused private "findCentroid" method.(ç”İñ8¢„Îëå1J$c560f9c7-b63c-42f8-9686-2fe2ad5b2f03
 ~
-java:S1144¦":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8¢„Îëå1J$360bed87-9744-458e-887d-6ad84b428ff3
+java:S1144©":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8¢„Îëå1J$d9ec47a5-5d85-47df-bed9-733cc25181bc

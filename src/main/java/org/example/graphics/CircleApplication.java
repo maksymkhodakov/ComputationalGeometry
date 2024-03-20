@@ -94,9 +94,8 @@ public class CircleApplication extends Application {
         stage.show();
     }
 
-    public Set<com.vividsolutions.jts.geom.Point> findAllIntersectionPoints(List<LineString> lines) {
+    public Set<Point> findAllIntersectionPoints(List<LineString> lines) {
         Set<com.vividsolutions.jts.geom.Point> intersectionPoints = new HashSet<>();
-        GeometryFactory geometryFactory = new GeometryFactory();
 
         // Compare each line with every other line exactly once
         for (int i = 0; i < lines.size(); i++) {
@@ -118,7 +117,11 @@ public class CircleApplication extends Application {
             }
         }
 
-        return intersectionPoints;
+        return intersectionPoints.stream().map(this::convertJtsPointToCustomPoint).collect(Collectors.toSet());
+    }
+
+    private Point convertJtsPointToCustomPoint(com.vividsolutions.jts.geom.Point jtsPoint) {
+        return new Point(jtsPoint.getCoordinate().x, jtsPoint.getCoordinate().y);
     }
 
 
@@ -543,6 +546,20 @@ public class CircleApplication extends Application {
         public Point(double x, double y) {
             this.x = x;
             this.y = y;
+        }
+
+        @Override
+        public int hashCode() {
+            long temp = Double.doubleToLongBits(x);
+            int result = (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(y);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Point{" + "x=" + x + ", y=" + y + '}';
         }
     }
 }
