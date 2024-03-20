@@ -88,25 +88,6 @@ public class CircleApplication extends Application {
         stage.show();
     }
 
-    private void drawVoronoiDiagram(Geometry voronoiDiagram) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.ORANGE); // Set a color that distinguishes Voronoi edges
-        gc.setLineWidth(1); // Line width for Voronoi edges
-
-        for (int i = 0; i < voronoiDiagram.getNumGeometries(); i++) {
-            Geometry geometry = voronoiDiagram.getGeometryN(i);
-            if (geometry instanceof Polygon) {
-                Polygon polygon = (Polygon) geometry;
-                Coordinate[] coordinates = polygon.getExteriorRing().getCoordinates();
-                for (int j = 0; j < coordinates.length - 1; j++) {
-                    Coordinate start = coordinates[j];
-                    Coordinate end = coordinates[j + 1];
-                    gc.strokeLine(start.x, start.y, end.x, end.y);
-                }
-            }
-        }
-    }
-
     private void drawVoronoiDiagram(Geometry voronoiDiagram, Polygon starPolygon) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.ORANGE); // Set a color that distinguishes Voronoi edges

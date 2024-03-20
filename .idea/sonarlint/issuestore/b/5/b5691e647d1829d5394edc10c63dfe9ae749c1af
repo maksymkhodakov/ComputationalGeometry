@@ -1,17 +1,13 @@
 
-ƒ	java:S125J"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8Ë±ÃÃå1J$37c510d9-e549-4259-a4ff-db8edc06d3c7
+ƒ	java:S125J"<This block of commented-out lines of code should be removed.(î¤¶şÿÿÿÿ8×˜²êå1J$04254f16-53ff-4168-9a71-2386c67cc80f
 
-java:S6201b"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8ñ‚»éå1J$334039e2-d843-41c2-9e21-ce0337cda7ac
-
-java:S6201u"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8ªÌééå1J$4b66240e-7900-422b-9cb2-a5110c14575d
-‘	java:S100ƒ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8Ó±ÃÃå1J$6e32b95b-5076-4ba5-a8eb-7a58329fa67e
+java:S6201b"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8ÜÓêêå1J$ece86ecc-9075-4bd5-890c-ae3a31f46eda
+‘	java:S100ğ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(©·îÈ8¥¨±êå1J$b260287e-e397-4ae2-b901-e520478b1464
 •
-java:S1128"MRemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferOp'.(£Âö¼øÿÿÿÿ8Çïéå1J$d3912058-5123-429b-8be7-660c10304b47
+java:S1128"MRemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferOp'.(£Âö¼øÿÿÿÿ8©£ëêå1J$b020da12-025e-4252-b9bb-3f80022773b3
 ˜
-java:S1128"URemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferParameters'.(ËÉµ8Çïéå1J$7af58255-50a8-44b1-8ba0-5cc35473e99a
-
-java:S1144["7Remove this unused private "drawVoronoiDiagram" method.(¿“¢­ûÿÿÿÿ8Èïéå1J$d9a4adaa-9734-40b5-a52e-8e40d83f27ce
+java:S1128"URemove this unused import 'com.vividsolutions.jts.operation.buffer.BufferParameters'.(ËÉµ8©£ëêå1J$6895c170-435d-43cc-885e-e44edd78efe5
 u
-java:S1144ú"1Remove this unused private "findCentroid" method.(ç”İñ8å±ÃÃå1J$57b1bc8c-b999-496b-a1b2-168bf5af5dd2
+java:S1144ç"1Remove this unused private "findCentroid" method.(ç”İñ8°¨±êå1J$2851097d-4eb5-4acf-85f6-92a43ca19122
 ~
-java:S1144ƒ":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8å±ÃÃå1J$35fd1d04-c38a-4dfc-b032-596e3c82df96
+java:S1144ğ":Remove this unused private "DelaunayTriangulation" method.(©·îÈ8±¨±êå1J$837413dd-098c-4cd0-9c4e-094a2fe29ccf
