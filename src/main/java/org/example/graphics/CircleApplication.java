@@ -124,7 +124,7 @@ public class CircleApplication extends Application {
 
 
         stage.setScene(scene);
-        stage.setTitle("Опукла Оболонка і Вписане Коло");
+        stage.setTitle("Зірковий многогранник і Вписане Коло");
         stage.show();
     }
 
