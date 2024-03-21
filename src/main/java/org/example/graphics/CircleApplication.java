@@ -66,8 +66,8 @@ public class CircleApplication extends Application {
             List<Point> starShape = formStarShape(points, n, m);
             drawConvexHull(starShape); // Малювання зіркового многокутника
 
-            Polygon starPolygon = createStarShapePolygon(starShape); // starShape is your list of star shape points
-            Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // points are used to generate the diagram
+            Polygon starPolygon = createStarShapePolygon(starShape); // starShape це список точок зіркового многокутника
+            Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // точки які використовуються для генерації діаграм
             drawVoronoiDiagram(voronoiDiagram, starPolygon); // Now pass the starPolygon as well
             final List<LineString> voronoiEdges = captureVoronoiEdges(voronoiDiagram);
             System.out.println("All Voronoi diagram's edges");
@@ -76,27 +76,26 @@ public class CircleApplication extends Application {
             final Set<Point> intersections = findAllIntersectionPoints(voronoiEdges);
 
             GraphicsContext gc = canvas.getGraphicsContext2D();
-            // Highlighting intersection points
-            gc.setFill(Color.GREEN); // Choose a color for the intersection points
+            gc.setFill(Color.GREEN);
             for (Point intersection : intersections) {
-                gc.fillOval(intersection.x - 3, intersection.y - 3, 6, 6); // Draw a small circle for each intersection point
+                gc.fillOval(intersection.x - 3, intersection.y - 3, 6, 6); // Малюємо маленький кружечок
             }
             System.out.println("Intersections:");
             System.out.println(intersections);
 
 
-            // Store circles and their radiuses in a list
+            // зберігаємо кружечки в списку
             List<Circle> circles = new ArrayList<>();
             for (Point intersection : intersections) {
-                Polygon bufferedStarPolygon = (Polygon) starPolygon.buffer(0.01); // Adjust the buffer distance as needed
+                Polygon bufferedStarPolygon = (Polygon) starPolygon.buffer(0.01); // налаштовуємо буфферизацію для фільтрації точок
                 if (bufferedStarPolygon.contains(new GeometryFactory().createPoint(new Coordinate(intersection.x, intersection.y)))) {
                     double radius = calculateDistanceToStarPolygonBoundary(intersection, starPolygon);
                     circles.add(new Circle(intersection, radius));
                 }
             }
 
-            // Draw circles with radiuses up to the star polygon
-            gc.setStroke(Color.BLUE); // Set the color for the circles
+            // малюємо кружечки
+            gc.setStroke(Color.BLUE);
             for (Circle circle : circles) {
                 double x = circle.center.x;
                 double y = circle.center.y;
@@ -104,7 +103,7 @@ public class CircleApplication extends Application {
                 gc.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
             }
 
-            // List all circles and their radiuses
+            // список всіх кружечків та радіусів
             System.out.println("All circles inside and their radiuses:");
             for (int i = 0; i < circles.size(); i++) {
                 Circle circle = circles.get(i);
@@ -128,7 +127,6 @@ public class CircleApplication extends Application {
         stage.show();
     }
 
-    // Calculate the distance from an intersection point to the closest point on the star polygon boundary
     private double calculateDistanceToStarPolygonBoundary(Point point, Polygon starPolygon) {
         GeometryFactory geometryFactory = new GeometryFactory();
         Geometry pointGeometry = geometryFactory.createPoint(new Coordinate(point.x, point.y));
@@ -139,18 +137,14 @@ public class CircleApplication extends Application {
     public Set<Point> findAllIntersectionPoints(List<LineString> lines) {
         Set<com.vividsolutions.jts.geom.Point> intersectionPoints = new HashSet<>();
 
-        // Compare each line with every other line exactly once
         for (int i = 0; i < lines.size(); i++) {
             for (int j = i + 1; j < lines.size(); j++) {
                 Geometry intersection = lines.get(i).intersection(lines.get(j));
 
-                // If there's an intersection, process it
                 if (intersection != null && !intersection.isEmpty()) {
                     if (intersection instanceof com.vividsolutions.jts.geom.Point) {
-                        // If the intersection is a single point, add it directly
                         intersectionPoints.add((com.vividsolutions.jts.geom.Point) intersection);
                     } else if (intersection instanceof MultiPoint) {
-                        // If the intersection is multiple points, add them all
                         for (int pointIndex = 0; pointIndex < intersection.getNumGeometries(); pointIndex++) {
                             intersectionPoints.add((com.vividsolutions.jts.geom.Point) intersection.getGeometryN(pointIndex));
                         }
@@ -189,8 +183,8 @@ public class CircleApplication extends Application {
 
     private void drawVoronoiDiagram(Geometry voronoiDiagram, Polygon starPolygon) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.ORANGE); // Set a color that distinguishes Voronoi edges
-        gc.setLineWidth(1); // Line width for Voronoi edges
+        gc.setStroke(Color.ORANGE);
+        gc.setLineWidth(1);
 
         for (int i = 0; i < voronoiDiagram.getNumGeometries(); i++) {
             Geometry geometry = voronoiDiagram.getGeometryN(i);
@@ -205,12 +199,11 @@ public class CircleApplication extends Application {
             }
         }
 
-        // Now, let's mark all points that are inside the star polygon
-        gc.setFill(Color.BLUE); // Set a color for points inside the star polygon
-        for (Point point : points) { // Assuming 'points' are the Voronoi vertices or any points you want to check
+        gc.setFill(Color.BLUE);
+        for (Point point : points) {
             Geometry pointGeometry = new GeometryFactory().createPoint(new Coordinate(point.x, point.y));
             if (starPolygon.contains(pointGeometry)) {
-                gc.fillOval(point.x - 3, point.y - 3, 6, 6); // Draw a small circle for each point inside
+                gc.fillOval(point.x - 3, point.y - 3, 6, 6);
             }
         }
     }
@@ -221,7 +214,7 @@ public class CircleApplication extends Application {
         for (int i = 0; i < starShapePoints.size(); i++) {
             coordinates[i] = new Coordinate(starShapePoints.get(i).x, starShapePoints.get(i).y);
         }
-        coordinates[starShapePoints.size()] = coordinates[0]; // Close the polygon by repeating the first point at the end
+        coordinates[starShapePoints.size()] = coordinates[0];
         LinearRing linearRing = geometryFactory.createLinearRing(coordinates);
         return geometryFactory.createPolygon(linearRing, null);
     }
