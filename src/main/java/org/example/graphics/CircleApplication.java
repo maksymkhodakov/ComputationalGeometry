@@ -1,6 +1,5 @@
 package org.example.graphics;
 
-import com.vividsolutions.jts.algorithm.MinimumBoundingCircle;
 import com.vividsolutions.jts.geom.*;
 import com.vividsolutions.jts.triangulate.VoronoiDiagramBuilder;
 import javafx.application.Application;
@@ -67,16 +66,6 @@ public class CircleApplication extends Application {
             List<Point> starShape = formStarShape(points, n, m);
             drawConvexHull(starShape); // Малювання зіркового многокутника
 
-            // Compute the largest empty circle
-            //Circle largestEmptyCircle = findMaximumInscribedCircle(starShape);
-            // Draw the largest empty circle
-            //drawCircle(largestEmptyCircle);
-            //Circle inscribedCircle = findInscribedCircle(starShape);
-            //drawCircle(inscribedCircle);
-            //radiusLabel.setText(String.format("Радіус кола: %.2f", largestEmptyCircle.radius));
-            //List<Line> bisectors = generateBisectors(starShape);
-            //drawBisectors(bisectors);
-
             Polygon starPolygon = createStarShapePolygon(starShape); // starShape is your list of star shape points
             Geometry voronoiDiagram = generateVoronoiDiagram(starShape); // points are used to generate the diagram
             drawVoronoiDiagram(voronoiDiagram, starPolygon); // Now pass the starPolygon as well
@@ -96,14 +85,17 @@ public class CircleApplication extends Application {
             System.out.println(intersections);
 
 
-            // Store circles and their radii in a list
+            // Store circles and their radiuses in a list
             List<Circle> circles = new ArrayList<>();
             for (Point intersection : intersections) {
-                double radius = calculateDistanceToStarPolygonBoundary(intersection, starPolygon);
-                circles.add(new Circle(intersection, radius));
+                Polygon bufferedStarPolygon = (Polygon) starPolygon.buffer(0.01); // Adjust the buffer distance as needed
+                if (bufferedStarPolygon.contains(new GeometryFactory().createPoint(new Coordinate(intersection.x, intersection.y)))) {
+                    double radius = calculateDistanceToStarPolygonBoundary(intersection, starPolygon);
+                    circles.add(new Circle(intersection, radius));
+                }
             }
 
-            // Draw circles with radii up to the star polygon
+            // Draw circles with radiuses up to the star polygon
             gc.setStroke(Color.BLUE); // Set the color for the circles
             for (Circle circle : circles) {
                 double x = circle.center.x;
@@ -112,17 +104,22 @@ public class CircleApplication extends Application {
                 gc.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
             }
 
-            // List all circles and their radii
-            System.out.println("All circles and their radii:");
+            // List all circles and their radiuses
+            System.out.println("All circles inside and their radiuses:");
             for (int i = 0; i < circles.size(); i++) {
                 Circle circle = circles.get(i);
                 System.out.println("Circle " + (i + 1) + ": Center(" + circle.center.x + ", " + circle.center.y + "), Radius: " + circle.radius);
             }
 
-
-            //final Circle circle = findOptimalInscribedCircle(intersections, starShape);
-            //drawCircle(circle);
-            //radiusLabel.setText(String.format("Радіус кола: %.2f", circle.radius));
+            circles.stream().max(Comparator.comparing(circle -> circle.radius))
+                    .ifPresent(circle -> {
+                        gc.setStroke(Color.RED);
+                        double x = circle.center.x;
+                        double y = circle.center.y;
+                        double radius = circle.radius;
+                        gc.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
+                        radiusLabel.setText(String.format("Радіус кола: %.2f", circle.radius));
+                    });
         });
 
 
@@ -247,104 +244,6 @@ public class CircleApplication extends Application {
         return new GeometryCollection(geometries, geometryFactory);
     }
 
-    private Circle findMaximumInscribedCircle(List<Point> starShape) {
-        if (starShape.isEmpty()) return null;
-
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Coordinate[] coordinates = new Coordinate[starShape.size() + 1];
-        for (int i = 0; i < starShape.size(); i++) {
-            Point p = starShape.get(i);
-            coordinates[i] = new Coordinate(p.x, p.y);
-        }
-        coordinates[starShape.size()] = new Coordinate(starShape.get(0).x, starShape.get(0).y);
-        LinearRing linearRing = geometryFactory.createLinearRing(coordinates);
-        Polygon polygon = geometryFactory.createPolygon(linearRing, null);
-
-        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
-        voronoiBuilder.setSites(polygon);
-        Geometry voronoiDiagram = voronoiBuilder.getDiagram(geometryFactory);
-
-        List<Point> voronoiVertices = extractVertices(voronoiDiagram);
-
-        Circle maxCircle = null;
-        double maxRadius = 0;
-        for (Point vertex : voronoiVertices) {
-            Circle circle = findCircleContainingPoint(starShape, vertex);
-            if (Objects.requireNonNull(circle).radius > maxRadius) {
-                maxCircle = circle;
-                maxRadius = circle.radius;
-            }
-        }
-
-        return maxCircle;
-    }
-
-    private List<Point> extractVertices(Geometry geometry) {
-        List<Point> vertices = new ArrayList<>();
-        for (int i = 0; i < geometry.getNumGeometries(); i++) {
-            Geometry pointGeometry = geometry.getGeometryN(i);
-            Coordinate coordinate = pointGeometry.getCoordinate();
-            vertices.add(new Point(coordinate.x, coordinate.y));
-        }
-        return vertices;
-    }
-
-    private Circle findCircleContainingPoint(List<Point> starShape, Point point) {
-        if (starShape.isEmpty()) return null;
-
-        double minDistance = Double.MAX_VALUE;
-        for (int i = 0; i < starShape.size(); i++) {
-            Point p1 = starShape.get(i);
-            Point p2 = starShape.get((i + 1) % starShape.size());
-            double distance = pointToLineDistance(point, p1, p2);
-            minDistance = Math.min(minDistance, distance);
-        }
-
-        return new Circle(point, minDistance);
-    }
-
-    private double pointToLineDistance(Point p, Point p1, Point p2) {
-        double x0 = p.x;
-        double y0 = p.y;
-        double x1 = p1.x;
-        double y1 = p1.y;
-        double x2 = p2.x;
-        double y2 = p2.y;
-        double dx = x2 - x1;
-        double dy = y2 - y1;
-        double num = Math.abs(dx * (y1 - y0) - (x1 - x0) * dy);
-        double den = Math.sqrt(dx * dx + dy * dy);
-        return num / den;
-    }
-
-    public static Circle findMaximumInscribedCircle(Geometry polygon) {
-        MinimumBoundingCircle mbc = new MinimumBoundingCircle(polygon);
-        Geometry circleGeometry = mbc.getCircle();
-
-        com.vividsolutions.jts.geom.Point centerPoint = circleGeometry.getCentroid();
-        Coordinate centerCoordinate = centerPoint.getCoordinate();
-        Point center = new Point(centerCoordinate.x, centerCoordinate.y);
-
-        double radius = circleGeometry.getEnvelopeInternal().getWidth() / 2; // Use half the width of the envelope as radius
-
-        return new Circle(center, radius);
-    }
-
-    private Point findCentroid(Geometry triangle) {
-        Coordinate[] coordinates = triangle.getCoordinates();
-        double centroidX = (coordinates[0].x + coordinates[1].x + coordinates[2].x) / 3;
-        double centroidY = (coordinates[0].y + coordinates[1].y + coordinates[2].y) / 3;
-        return new Point(centroidX, centroidY);
-    }
-
-
-    // Compute Delaunay triangulation
-    private Geometry DelaunayTriangulation(Polygon polygon) {
-        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
-        voronoiBuilder.setSites(polygon);
-        return voronoiBuilder.getDiagram(polygon.getFactory());
-    }
-
     private void setupCanvasZoom() {
         canvas.setOnScroll(e -> {
             double delta = 1.2;
@@ -376,13 +275,6 @@ public class CircleApplication extends Application {
         });
     }
 
-    private void drawCircle(Circle circle) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.BLUE);
-        gc.setLineWidth(1);
-        gc.strokeOval(circle.center.x - circle.radius, circle.center.y - circle.radius, 2 * circle.radius, 2 * circle.radius);
-    }
-
     private void generatePoints(int numberOfPoints) {
         points.clear();
         for (int i = 0; i < numberOfPoints; i++) {
@@ -398,71 +290,6 @@ public class CircleApplication extends Application {
         gc.setFill(Color.BLACK);
         for (Point point : points) {
             gc.fillOval(point.x - 2, point.y - 2, 4, 4);
-        }
-    }
-
-    private List<Line> generateBisectors(List<Point> convexHull) {
-        List<Line> bisectors = new ArrayList<>();
-        int n = convexHull.size();
-        for (int i = 0; i < n; i++) {
-            Point p0 = convexHull.get((i - 1 + n) % n); // Попередня точка
-            Point p1 = convexHull.get(i);                // Поточна точка
-            Point p2 = convexHull.get((i + 1) % n);      // Наступна точка
-
-            // Вектор p0->p1
-            double dx1 = p1.x - p0.x;
-            double dy1 = p1.y - p0.y;
-
-            // Вектор p1->p2
-            double dx2 = p2.x - p1.x;
-            double dy2 = p2.y - p1.y;
-
-            // Нормалізація векторів
-            double len1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
-            double len2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-            dx1 /= len1;
-            dy1 /= len1;
-            dx2 /= len2;
-            dy2 /= len2;
-
-            // Середній вектор (напрямок бісектриси)
-            double bx = dx1 + dx2;
-            double by = dy1 + dy2;
-            double blen = Math.sqrt(bx * bx + by * by);
-            bx /= blen; // Нормалізація бісектриси
-            by /= blen;
-
-            double c = -(bx * p1.x + by * p1.y);
-            bisectors.add(new Line(bx, by, c));
-        }
-
-        return bisectors;
-    }
-
-    private void drawBisectors(List<Line> bisectors) {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setStroke(Color.GREEN);
-        gc.setLineWidth(1);
-
-        for (Line bisector : bisectors) {
-            double x1;
-            double y1;
-            double x2;
-            double y2;
-
-            if (bisector.b != 0) {
-                x1 = 0;
-                y1 = -bisector.c / bisector.b;
-                x2 = canvas.getWidth();
-                y2 = (-bisector.a * x2 - bisector.c) / bisector.b;
-            } else {
-                x1 = -bisector.c / bisector.a;
-                y1 = 0;
-                x2 = x1;
-                y2 = canvas.getHeight();
-            }
-
-            gc.strokeLine(x1, y1, x2, y2);
         }
     }
 
@@ -507,32 +334,6 @@ public class CircleApplication extends Application {
         }
     }
 
-    public Circle findInscribedCircle(List<Point> starShape) {
-        if (starShape.isEmpty()) return null;
-
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Coordinate[] coordinates = new Coordinate[starShape.size()];
-        for (int i = 0; i < starShape.size(); i++) {
-            Point p = starShape.get(i);
-            coordinates[i] = new Coordinate(p.x, p.y);
-        }
-
-        VoronoiDiagramBuilder voronoiBuilder = new VoronoiDiagramBuilder();
-        voronoiBuilder.setSites(Arrays.asList(coordinates));
-        Geometry voronoiDiagram = voronoiBuilder.getDiagram(geometryFactory);
-
-        // Extract the convex hull of the Voronoi diagram
-        Geometry convexHull = voronoiDiagram.convexHull();
-
-        // Compute the center and radius of the inscribed circle from the convex hull
-        com.vividsolutions.jts.geom.Point centerPoint = convexHull.getCentroid();
-        Coordinate centerCoordinate = centerPoint.getCoordinate();
-        Point center = new Point(centerCoordinate.x, centerCoordinate.y);
-        double radius = Math.sqrt(convexHull.getArea() / Math.PI);
-
-        return new Circle(center, radius);
-    }
-
     public Point findCentroid(List<Point> hull) {
         double totalArea = 0;
         double centroidX = 0;
@@ -570,12 +371,6 @@ public class CircleApplication extends Application {
         double a;
         double b;
         double c;
-
-        Line(Point p1, Point p2) {
-            a = p2.y - p1.y;
-            b = p1.x - p2.x;
-            c = -a * p1.x - b * p1.y;
-        }
 
         public Line(double a, double b, double c) {
             this.a = a;
