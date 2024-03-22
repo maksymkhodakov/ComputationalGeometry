@@ -6,6 +6,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -20,6 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class CircleApplication extends Application {
+    private final Map<Long, Integer> mapStatistics = new HashMap<>();
     private final List<Point> points = new ArrayList<>();
     private final Canvas canvas = new Canvas(1920, 1080);
     private final Label radiusLabel = new Label("Радіус кола: ");
@@ -39,6 +43,9 @@ public class CircleApplication extends Application {
         Button generateButton = new Button("Генерувати");
         TextField nField = new TextField(); // Для вводу кількості вершин
         TextField mField = new TextField(); // Для вводу кроку
+        Button showStatsButton = new Button("Показати статистику");
+        controls.getChildren().add(showStatsButton);
+        showStatsButton.setOnAction(e -> showStatistics());
         controls.getChildren().addAll(new Label("n: "), nField, new Label("m: "), mField, new Label("points: "), numberOfPointsField, generateButton, radiusLabel);
 
         root.setTop(controls);
@@ -47,6 +54,7 @@ public class CircleApplication extends Application {
         root.setCenter(canvas);
 
         generateButton.setOnAction(e -> {
+            long startTime = System.currentTimeMillis();
             int numberOfPoints;
             int n;
             int m;
@@ -119,11 +127,39 @@ public class CircleApplication extends Application {
                         gc.strokeOval(x - radius, y - radius, 2 * radius, 2 * radius);
                         radiusLabel.setText(String.format("Радіус кола: %.2f", circle.radius));
                     });
+            long endTime = System.currentTimeMillis();
+            mapStatistics.put(endTime - startTime, n);
         });
 
 
         stage.setScene(scene);
         stage.setTitle("Зірковий многогранник і Вписане Коло");
+        stage.show();
+    }
+
+    private void showStatistics() {
+        Stage stage = new Stage();
+
+        // Create new axes and chart instances for the new window
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+
+        xAxis.setLabel("Number of Vertices");
+        yAxis.setLabel("Execution Time (ms)");
+        lineChart.setTitle("Time Dependency on Number of Vertices");
+
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        series.setName("Execution Time");
+
+        // Populate the series with data from mapStatistics
+        mapStatistics.forEach((time, vertices) -> series.getData().add(new XYChart.Data<>(vertices, time)));
+
+        lineChart.getData().add(series);
+
+        Scene scene = new Scene(lineChart, 800, 600);
+        stage.setScene(scene);
+        stage.setTitle("Performance Statistics");
         stage.show();
     }
 
