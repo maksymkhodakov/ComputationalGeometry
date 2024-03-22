@@ -106,5 +106,3 @@ w
 G.idea/sonarlint/issuestore/9/f/9fe84ebb15faf917b7def6236dba604453cc61e0,f/0/f0e0f9cec86fe4b939ae22be5264c758801eb28f
 w
 G.idea/sonarlint/issuestore/9/6/96cf1c5f82cd01e2b4c80e2405a876ebfd8d131f,c/3/c325a58065e3f719addd92ab4ab29b36f5f4c07c
-h
-8src/main/java/org/example/graphics/PerformanceGraph.java,0/6/06cb9e1b7600bdebfb40c6ff8d7896cf8eb5fdde

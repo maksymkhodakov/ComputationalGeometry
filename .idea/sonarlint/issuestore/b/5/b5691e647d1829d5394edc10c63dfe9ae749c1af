@@ -1,17 +1,17 @@
 
-r	java:S106Q"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8İ“ó¿æ1J$23e729cf-0984-4bf6-8207-45c0141b9320
-l	java:S106R"+Replace this use of System.out by a logger.(“ê»r8İ“ó¿æ1J$9672ffe0-fa4b-4ee6-af4b-03943d99c675
-r	java:S106["+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8Äƒ’Àæ1J$f1da37e3-7688-4fa8-9619-1346280f4468
-r	java:S106\"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8Åƒ’Àæ1J$1ed8e5c0-7c24-4dbd-95c6-d61b56fdf252
-r	java:S106s"+Replace this use of System.out by a logger.(ÖÍÜ¶úÿÿÿÿ8Æƒ’Àæ1J$03640ef1-43ae-42ac-aee8-8d7cdc6e7c65
-r	java:S106v"+Replace this use of System.out by a logger.(«ÌêÃûÿÿÿÿ8Æƒ’Àæ1J$0986e5b2-6f9c-4518-8b38-e1a1b39e6d33
+r	java:S106Q"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8İ“ó¿æ1J$e5343b39-9dfa-433f-9c0a-de5a2fd67813
+l	java:S106R"+Replace this use of System.out by a logger.(“ê»r8İ“ó¿æ1J$1d13716b-4d76-4207-8e71-1f927a3e0290
+r	java:S106["+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8Äƒ’Àæ1J$a6e2ca72-b4b4-4d49-b054-88467c126645
+r	java:S106\"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8Åƒ’Àæ1J$555654de-7848-41ab-b385-59d443bb28a1
+r	java:S106s"+Replace this use of System.out by a logger.(ÖÍÜ¶úÿÿÿÿ8Æƒ’Àæ1J$5a2c0e69-5f40-44a1-8d6b-83cb12bea3ee
+r	java:S106v"+Replace this use of System.out by a logger.(«ÌêÃûÿÿÿÿ8Æƒ’Àæ1J$d8b8974f-3842-4174-95bb-4aea0c08e088
 ›
-java:S3776­"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Èƒ’Àæ1J$e14d4200-8798-4330-a9c9-73c972afe1ae
+java:S3776­"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Èƒ’Àæ1J$aca42243-01ca-4a33-857f-819c743f9eee
 
-java:S6201µ"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Êƒ’Àæ1J$29fbbc24-d26e-4510-8c63-e1e19d05dd04
+java:S6201µ"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Êƒ’Àæ1J$8da0dbbc-5130-49da-8aeb-fdde9a3b3d83
 ‘
-java:S6201Î"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ëƒ’Àæ1J$f591ca43-a86a-4909-80dc-09c2648aa381
+java:S6201Î"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ëƒ’Àæ1J$ba9a21dc-f192-4a54-ab5a-d54dbd46937b
 ‘
-java:S6201ã"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ìƒ’Àæ1J$3360b598-11f8-493c-8391-38c648f4fefc
+java:S6201ã"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ìƒ’Àæ1J$aef560d9-86ca-4f50-9e49-71de33947bbe
 ”
-java:S1206¥"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8Õƒ’Àæ1J$6f5b17ab-4633-49a8-92da-5faa354f8805
+java:S1206¥"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8Õƒ’Àæ1J$85dbddee-6949-44e9-9841-fc56013e4d04
