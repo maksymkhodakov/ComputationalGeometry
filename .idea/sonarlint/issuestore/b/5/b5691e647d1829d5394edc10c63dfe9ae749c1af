@@ -1,22 +1,22 @@
 
 •
-java:S3776%"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‚è¤í8¿·İÕê1J$3d3456c8-86d9-4f84-9813-aedacec51637
-r	java:S106O"+Replace this use of System.out by a logger.(èéŸøÿÿÿÿ8İ“ó¿æ1J$f399d70a-5b89-43ed-a4ff-9f89f12f4a04
-r	java:S106d"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8İ“ó¿æ1J$5130fe44-38ad-48a2-ba6d-14387f6815bf
-l	java:S106e"+Replace this use of System.out by a logger.(“ê»r8Äƒ’Àæ1J$f600a6de-7760-4256-a2d6-381f847d4893
-r	java:S106n"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8Åƒ’Àæ1J$b90b537a-f34c-486c-93ff-278025d78355
-r	java:S106o"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8Æƒ’Àæ1J$2a1726a8-9990-4853-8a16-1dbac8c638f3
-s	java:S106†"+Replace this use of System.out by a logger.(ÖÍÜ¶úÿÿÿÿ8Æƒ’Àæ1J$7f431d15-d558-42a1-be86-cb6dca1cb7ca
-s	java:S106‰"+Replace this use of System.out by a logger.(«ÌêÃûÿÿÿÿ8Ë·İÕê1J$c5e5e8b8-b47a-440f-837d-e9dd44d7ac61
+java:S3776%"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‚è¤í8¿·İÕê1J$6a6dfb58-f732-4b96-a436-36156d4aa060
+r	java:S106O"+Replace this use of System.out by a logger.(èéŸøÿÿÿÿ8İ“ó¿æ1J$fa42afe0-ba09-4ce9-b81f-46f4f0938397
+r	java:S106d"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8İ“ó¿æ1J$a05c97f8-4ac6-4478-87d8-2f1d56130bb8
+l	java:S106e"+Replace this use of System.out by a logger.(“ê»r8Äƒ’Àæ1J$d47496a9-f087-4f3e-a101-b7b804dab51b
+r	java:S106n"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8Åƒ’Àæ1J$d07a8072-a07c-440f-95c5-60f5f213e966
+r	java:S106o"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8Æƒ’Àæ1J$b6d18249-d60c-49ed-9d11-1009bd40a065
+s	java:S106†"+Replace this use of System.out by a logger.(ÖÍÜ¶úÿÿÿÿ8Æƒ’Àæ1J$6265efc1-aa17-46a7-8e7a-0e5daef4f477
+s	java:S106‰"+Replace this use of System.out by a logger.(«ÌêÃûÿÿÿÿ8Ë·İÕê1J$2286d0fa-7cba-4e7b-9889-0a22d01506e8
 ›
-java:S3776Ú"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Èƒ’Àæ1J$5701e340-0af0-4ae5-9bde-71919cf13965
+java:S3776Ú"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Èƒ’Àæ1J$d3077c0e-02b1-4442-860d-e492e2af3603
 
-java:S6201â"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Êƒ’Àæ1J$3d855cd8-389e-4a7b-9195-77ccf9a395bf
+java:S6201â"DReplace this instanceof check and cast with 'instanceof Point point'(«ØÆÙÿÿÿÿÿ8Êƒ’Àæ1J$e5558cfe-915b-45c2-b792-9aabc9589915
 ‘
-java:S6201û"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ëƒ’Àæ1J$cf218421-28e5-4391-8df6-bc5c34da6e73
+java:S6201û"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ëƒ’Àæ1J$16b11980-17b1-42b4-ae5b-1cbcb4bb5705
 ‘
-java:S6201"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ìƒ’Àæ1J$248b790f-5677-45bd-997e-08e704174132
+java:S6201"HReplace this instanceof check and cast with 'instanceof Polygon polygon'(áÿ¹¬şÿÿÿÿ8Ìƒ’Àæ1J$e06495e5-8128-4b18-a579-3dcd6922ca60
 ”
-java:S1206Ò"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8Õƒ’Àæ1J$386a626e-d4c6-4521-8301-e2111458530d
+java:S1206Ò"PThis class overrides "hashCode()" and should therefore also override "equals()".(ğÜşŠ8Õƒ’Àæ1J$e8b96feb-1c88-4ac3-8335-3dbf99c691fd
 †
-java:S1128"CRemove this unused import 'java.util.concurrent.ThreadLocalRandom'.(¨ÏÙî8ÁÌæÕê1J$3f10be69-cccf-4b96-bfc5-35d55af09124
+java:S1128"CRemove this unused import 'java.util.concurrent.ThreadLocalRandom'.(¨ÏÙî8ÁÌæÕê1J$ecb3826a-7ae9-493b-834d-5d21b8a69f3f
