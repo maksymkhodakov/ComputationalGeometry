@@ -12,6 +12,7 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -46,11 +47,18 @@ public class CircleApplication extends Application {
         Button showStatsButton = new Button("Показати статистику");
         controls.getChildren().add(showStatsButton);
         showStatsButton.setOnAction(e -> showStatistics());
+        Button clearButton = new Button("Очистити");
+        controls.getChildren().add(clearButton);
+        clearButton.setOnAction(e -> {
+            points.clear(); // Clear the list of points
+            clearCanvas(); // Clear the canvas
+        });
         controls.getChildren().addAll(new Label("n: "), nField, new Label("m: "), mField, new Label("points: "), numberOfPointsField, generateButton, radiusLabel);
 
         root.setTop(controls);
         setupCanvasZoom();
         setupDraggableCanvas(canvas);
+        setupCanvasClickToAddPoints();
         root.setCenter(canvas);
 
         generateButton.setOnAction(e -> {
@@ -58,18 +66,29 @@ public class CircleApplication extends Application {
             int numberOfPoints;
             int n;
             int m;
+            boolean useManualPoints = false;
             try {
                 numberOfPoints = Integer.parseInt(numberOfPointsField.getText());
                 n = Integer.parseInt(nField.getText());
                 m = Integer.parseInt(mField.getText());
+                generatePoints(numberOfPoints);
             } catch (NumberFormatException ex) {
-                // Якщо введення некоректне, використовуйте стандартні значення
-                numberOfPoints = ThreadLocalRandom.current().nextInt(100, 10000);
-                n = 5; // Стандартне значення для n
-                m = 2; // Стандартне значення для m
+                // If there's no input, use manual points
+                if (points.isEmpty()) {
+                    // Show a message or log that no points are available
+                    System.out.println("Please add points manually or fill in all fields.");
+                    return;
+                }
+                useManualPoints = true;
+                // Optional: Calculate n and m based on the number of points or set them to predefined values
+                n = points.size(); // Example: use all points
+                m = Math.max(1, n / 5); // Example strategy for m
             }
-            generatePoints(numberOfPoints);
-            drawPoints();
+
+            if (!useManualPoints) {
+                drawPoints();
+            }
+
             // Модифікація тут для використання n і m
             List<Point> starShape = formStarShape(points, n, m);
             drawConvexHull(starShape); // Малювання зіркового многокутника
@@ -136,6 +155,32 @@ public class CircleApplication extends Application {
         stage.setTitle("Зірковий многогранник і Вписане Коло");
         stage.show();
     }
+
+    private void clearCanvas() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // Clear the canvas
+    }
+
+
+    private void setupCanvasClickToAddPoints() {
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if (event.getButton() == MouseButton.PRIMARY) { // Ensure left mouse click
+                double x = event.getX();
+                double y = event.getY();
+                Point newPoint = new Point(x, y);
+                points.add(newPoint); // Add the new point to the list
+                drawSinglePoint(newPoint); // Draw the new point
+            }
+        });
+    }
+
+    private void drawSinglePoint(Point point) {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillOval(point.x - 2, point.y - 2, 4, 4);
+    }
+
+
 
     private void showStatistics() {
         Stage stage = new Stage();
