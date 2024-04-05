@@ -1,13 +1,6 @@
 
 •
 java:S3776%"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(‚è¤í8¿·İÕê1J$6a6dfb58-f732-4b96-a436-36156d4aa060
-r	java:S106O"+Replace this use of System.out by a logger.(èéŸøÿÿÿÿ8İ“ó¿æ1J$fa42afe0-ba09-4ce9-b81f-46f4f0938397
-r	java:S106d"+Replace this use of System.out by a logger.(î‘µ‚ıÿÿÿÿ8İ“ó¿æ1J$a05c97f8-4ac6-4478-87d8-2f1d56130bb8
-l	java:S106e"+Replace this use of System.out by a logger.(“ê»r8Äƒ’Àæ1J$d47496a9-f087-4f3e-a101-b7b804dab51b
-r	java:S106n"+Replace this use of System.out by a logger.(ìÍÕÃşÿÿÿÿ8Åƒ’Àæ1J$d07a8072-a07c-440f-95c5-60f5f213e966
-r	java:S106o"+Replace this use of System.out by a logger.(İç½‘ûÿÿÿÿ8Æƒ’Àæ1J$b6d18249-d60c-49ed-9d11-1009bd40a065
-s	java:S106†"+Replace this use of System.out by a logger.(ÖÍÜ¶úÿÿÿÿ8Æƒ’Àæ1J$6265efc1-aa17-46a7-8e7a-0e5daef4f477
-s	java:S106‰"+Replace this use of System.out by a logger.(«ÌêÃûÿÿÿÿ8Ë·İÕê1J$2286d0fa-7cba-4e7b-9889-0a22d01506e8
 ›
 java:S3776Ú"RRefactor this method to reduce its Cognitive Complexity from 17 to the 15 allowed.(æÆç†ÿÿÿÿÿ8Èƒ’Àæ1J$d3077c0e-02b1-4442-860d-e492e2af3603
 
